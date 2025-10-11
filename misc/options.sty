@@ -62,7 +62,7 @@
 
 \font\vse=cmr10 at 5pt\setbox0=\hbox{y} % https://tex.stackexchange.com/a/251527
 \newcommand{\ye}{\raise\ht0\rlap{\hbox to \wd0{\hfil\vse e\hfil}}\box0} % the "e over y" letter (thorn variation used after invention of print)
-
+\newcommand{\s}{{\longs}}
 \newcommand\Pfa{\includegraphics[width=.8em]{misc/Playford1}}
 \newcommand\Pfb{\includegraphics[width=.8em]{misc/Playford2}}
 \newcommand\Pfc{\includegraphics[width=.8em]{misc/Playford3}}
@@ -77,6 +77,15 @@
 \newcommand\Thbab{\includegraphics[width=.8em]{misc/Thompson212}}
 \newcommand\Thbba{\includegraphics[width=.8em]{misc/Thompson221}}
 \newcommand\Thbbb{\includegraphics[width=.8em]{misc/Thompson222}} %thompson-style symbols for music repetition. First symbol amount of dots above, second amount of lines, third amount of dots below
+
+\renewcommand{\Tqbl}[3]{\Ibl0{#1}{#3}2\qb0{#1}\qb0{#2}\tbl0\qb0{#3}}
+\renewcommand{\Tqbu}[3]{\Ibu0{#1}{#3}2\qb0{#1}\qb0{#2}\tbu0\qb0{#3}}
+\renewcommand{\Qqbl}[4]{\Ibl0{#1}{#4}3\qb0{#1}\qb0{#2}\qb0{#3}\tbl0\qb0{#4}}
+\renewcommand{\Qqbu}[4]{\Ibu0{#1}{#4}3\qb0{#1}\qb0{#2}\qb0{#3}\tbu0\qb0{#4}}
+\renewcommand{\Tqbbl}[3]{\Ibbl0{#1}{#3}2\qb0{#1}\qb0{#2}\tbl0\qb0{#3}}
+\renewcommand{\Tqbbu}[3]{\Ibbu0{#1}{#3}2\qb0{#1}\qb0{#2}\tbu0\qb0{#3}}
+\renewcommand{\Qqbbl}[4]{\Ibbl0{#1}{#4}3\qb0{#1}\qb0{#2}\qb0{#3}\tbl0\qb0{#4}}
+\renewcommand{\Qqbbu}[4]{\Ibbu0{#1}{#4}3\qb0{#1}\qb0{#2}\qb0{#3}\tbu0\qb0{#4}}
 
 %\newcommand{\hsp}{\kern 1pt}    % Custom command for fine-tuning spacing in nested quotation marks
 

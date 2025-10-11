@@ -31,12 +31,13 @@
 \pagestyle{fancy}                 % Fancy headers and footers for chapters
 
 \def\includeincomplete{1}
-
+\def\workinprogress{0}
+\ifthenelse{\workinprogress=1}{\inputdance{content/once_a_night}}{
 % Chapter inputs
 \inputdance{content/playford1651explanation}
 \inputdance{content/all_in_a_garden_green}
 \inputdance{content/blew_cap}
-\ifthenelse{\includeincomplete=1}{\inputdance{content/bromley_bells}}{}%chybí české instrukce
+\ifthenelse{\includeincomplete=1}{\inputdance{content/bromley_bells}}{} %chybí české instrukce
 \inputdance{content/emmas_waltz}
 \inputdance{content/the_fandango}
 \inputdance{content/the_fandango_set3}
@@ -45,13 +46,16 @@
 \inputdance{content/jamaica}
 \inputdance{content/miss_hamiltons_reel}
 \inputdance{content/my_lord_byrons_maggot}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/once_a_night}}{} %chybí české instrukce
 \inputdance{content/pauls_alley}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/the_rainbow}}{} %chybí české instrukce
 \inputdance{content/rakes_of_rochester}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_recruits}}{} %chybí české instrukce
 \inputdance{content/row_well_ye_mariners}
 \inputdance{content/swedish_country_dance}
 \inputdance{content/upon_a_summers_day}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/the_wedding_ring}}{} %chybí české instrukce
+}
 
 % ===== Back Matter =====
 \backmatter                       % Unnumbered appendices and bibliography

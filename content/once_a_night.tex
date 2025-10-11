@@ -1,10 +1,6 @@
-\danceName{THIS IS A TEMPLATE}{longDMin}%danceName must be followed by blank line for proper command parsing
-% parameters Dance name - index under which to list the dance. List of indexes
-%can be easily seen in backmatter/indices.tex, in case a new index is required, must be added both to that file
-%and misc/options.sty. Index option may be repeated as much as required, command takes any number of arguments
+\danceName{Once a Night}{longDMin}{thompson1774}%danceName must be followed by blank line for proper command parsing
 
-{\large Setup; music\hfill Author, year}  % E.g. {\large Longway for six; 3x AABB\hfill Playford, 1651}
-\todo{Name and author}
+{\large Longways double minor; $AABB$ adlib\hfill \Source{Thompson1774}}
 
 \begin{music}
     \smallmusicsize%
@@ -13,8 +9,8 @@
     \stafftopmarg=1\Interligne%
     \staffbotmarg=1\Interligne%
     \nobarnumbers%
-    \generalmeter{\allabreve}%  4/4 meter (C meter). Replace with \meterfrac{X}{Y} for X over Y meter
-    \generalsignature{0}% Positive general signature for N amount of sharps for the whole piece, negative for N flats
+    \generalmeter{\meterfrac68}%
+    \generalsignature{-1}%
     \startpiece% From here on now actual notes start. NO UNNECESSARY WHITESPACES, end every line with %comment%
 % https://icking-music-archive.org/software/musixtex/musixdoc.pdf
 % every bar of music starts with either of nnnotes, nnotes, notes, notesp, Notes, Notesp, NOtes, NOTes, NOTEs or NOTES.
@@ -53,42 +49,40 @@
 % forcing line break
 %%%%%%%% PART A %%%%%%%%
     \zleftrepeat%
-    \nnotes\qa0\qa1\qa2\qa3\en\xbar%
-    \notes\qa4\qa5\qa6\qa7\en\xbar%
-    \Notes\qa8\qa9\qa{10}\qa{11}\en\xbar%
-    \Notesp\qa{12}\qa{13}\qa{14}\qa{15}\en\alaligne%
-%
-    \NOtes\wh1\en\xbar%
-    \NOtesp\ha2\ha3\en\xbar%
-    \NOTes\hap4\qa5\en\xbar%
-    \NOTesp\Dqbl67\Dqbbu89\Dqbbl{10}{11}\en\zzleftrightrepeat%
+    \notes\ql8\cl9\Tqbl{10}85\en\xbar%
+    \notes\Tqbl358\Tqbl468\en\xbar%
+    \notes\Tqbl5{11}{10}\Tqbl987\en\xbar%
+    \notes\Tqbl854\Tqbu321\en\xbar%
+    \notes\ql8\cl9\Tqbl{10}85\en\xbar%
+    \notes\Tqbl358\Tqbl468\en\alaligne%
+    %
+    \notes\Tqbl5{11}{10}\Tqbl987\en\xbar%
+    \notes\qlp8\qup1\en\leftrightrepeat%
 %%%%%%%% PART B %%%%%%%%
-    \nnotes\slur03u3\qa0\qa1\qa2\qa3\en\xbar%
-    \notes\slur46d2\qa4\qa5\qa6\qa7\en\xbar%
-    \Notes\Ibu08{11}3\qb08\qb09\qb0{10}\tbu0\qb0{11}\en\xbar%
-    \Notesp\Ibbbl033{15}%
-    \qb03\qb04\qb05\qb06\qb03\qb04\qb05\qb06\qb03\qb04\qb05\qb06\qb03\qb04\qb05\tbl0\qb06\en\alaligne%
-%
-    \NOtes\wh1\en\xbar%
-    \NOtesp\ha2\ha3\en\xbar%
-    \NOTes\hap4\qa5\en\xbar%
-    \NOTesp\Dqbl67\Dqbbu89\Dqbbl{10}{11}\en\setrightrepeat%
+    \notes\Ibl0553\qb05\hsk\na4\qb04\tbl0\qb05\Tqbu210\en\xbar%
+    \notes\Ibu0163\qb01\hsk\na4\qb04\tbu0\qb06\Tqbl89{10}\en\xbar%
+    \notes\Tqbl975\Ibl0553\qb05\hsk\na4\qb04\tbl0\qb05\en\xbar%
+    \notes\Ibl0623\qb06\hsk\na4\qb04\tbl0\qb02\qup2\hsk\en\alaligne%
+    %
+    \notes\Ibu0533\qb05\hsk\na4\qb04\tbu0\qb03\Tqbu210\en\xbar%
+    \notes\Ibu0d43\qb0d\qb01\hsk\na4\tbu0\qb04\Tqbl68{10}\en\xbar%
+    \notes\Tqbl975\Ibl0843\qb08\qb06\hsk\na4\tbl0\qb04\en\xbar%
+    \notes\qlp5\qup{c}\en\xbar%
+    \notes\qlp5\Tqbl358\en\xbar%
+    \notes\qlp6\Tqbl468\en\alaligne%
+    %
+    \notes\Tqbl578\Tqbl9{10}{11}\en\xbar%
+    \notes\Tqbl{10}98\Tqbl765\en\xbar%
+    \notes\qlp5\Tqbl358\en\xbar%
+    \notes\qlp6\Tqbl468\en\xbar%
+    \notes\Tqbl5{11}9\Tqbl757\en\xbar%
+    \notes\qlp8\qup1\en\leftrightrepeat%
     \endpiece%
-    \todo{Music}
 \end{music}
 
-\begin{multicols}{2}
-    This is a template original dance description. It cu{\s}tomary u{\s}e{\s} long S whereever it appears in original text, and \Pfa, resp \Pfb to mark the repetition symbols from original texts
-    \columnbreak
-
-    Formating of original text is maintained as closely as possible where it makes sense
-\end{multicols}
-
-\HRule
-
-Most dances have descriptions written just as a nonformatted text, in that case, no multicolumn environment is needed.
-The original description is then ended by a double \verb!\Hrule!
-\todo{Dance description}
+Ca{\s}t off \& hands 4 round with the 3.$^d$ Cu. \Thaaa ca{\s}t up \& hands 4 round
+at top \Thbaa figure down contrary {\s}ides then on your own {\s}ides \Thaab lead down
+2 Cu. \& ca{\s}t up lead thro' the top \& ca{\s}t up \Thbab
 \HRule
 \HRule
 \vspace{1em}
