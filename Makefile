@@ -4,5 +4,8 @@ all:
 	musixtex -l -p main.tex
 	cp main.pdf out.pdf
 
+midis:
+	python3 midify.py content
+
 clean:
-	rm -rf main.pdf main.aux main.toc missfont.log musixtex.log *.idx *.ilg *.ind main.out *.bbl *.bcf *.blg main.run.xml
+	rm -rf main.pdf main.aux main.toc missfont.log musixtex.log *.idx *.ilg *.ind main.out *.bbl *.bcf *.blg main.run.xml midiOutput

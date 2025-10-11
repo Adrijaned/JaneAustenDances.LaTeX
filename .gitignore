@@ -11,3 +11,5 @@
 *.bcf
 *.blg
 main.run.xml
+*.mid
+midiOutput
