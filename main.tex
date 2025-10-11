@@ -1,10 +1,3 @@
-% =============================================================================
-% Victoria-Regia book template by @jancarauma
-% 2025 (c) Janderson Gomes
-% For further details, visit: artientista.blogspot.com (Caraumã)
-% 16/06/2025 - amazon brazil
-% =============================================================================
-
 % Document class and layout settings
 \documentclass[10pt,openany]{book}    % Standard book class with 12pt font and chapters starting on any page
 
@@ -37,24 +30,28 @@
 \mainmatter                       % Switch to Arabic numbering
 \pagestyle{fancy}                 % Fancy headers and footers for chapters
 
+\def\includeincomplete{1}
+
 % Chapter inputs
-%\inputdance{content/playford1651explanation}
-%\inputdance{content/all_in_a_garden_green}
-%\inputdance{content/blew_cap}
-\inputdance{content/bromley_bells}
-%\inputdance{content/emmas_waltz}
-%\inputdance{content/the_fandango}
-%\inputdance{content/the_fandango_set3}
-%\inputdance{content/hole_in_the_wall}
-%\inputdance{content/indian_queen}
-%\inputdance{content/jamaica}
-%\inputdance{content/miss_hamiltons_reel}
-%\inputdance{content/my_lord_byrons_maggot}
-%\inputdance{content/pauls_alley}
-%\inputdance{content/rakes_of_rochester}
-%\inputdance{content/row_well_ye_mariners}
-%\inputdance{content/swedish_country_dance}
-%\inputdance{content/upon_a_summers_day}
+\inputdance{content/playford1651explanation}
+\inputdance{content/all_in_a_garden_green}
+\inputdance{content/blew_cap}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/bromley_bells}}{}%chybí české instrukce
+\inputdance{content/emmas_waltz}
+\inputdance{content/the_fandango}
+\inputdance{content/the_fandango_set3}
+\inputdance{content/hole_in_the_wall}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/indian_queen}}{} %chybí české instrukce
+\inputdance{content/jamaica}
+\inputdance{content/miss_hamiltons_reel}
+\inputdance{content/my_lord_byrons_maggot}
+\inputdance{content/pauls_alley}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_rainbow}}{} %chybí české instrukce
+\inputdance{content/rakes_of_rochester}
+\inputdance{content/row_well_ye_mariners}
+\inputdance{content/swedish_country_dance}
+\inputdance{content/upon_a_summers_day}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_wedding_ring}}{} %chybí české instrukce
 
 % ===== Back Matter =====
 \backmatter                       % Unnumbered appendices and bibliography
