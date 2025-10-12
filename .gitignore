@@ -10,6 +10,6 @@
 *.bbl
 *.bcf
 *.blg
-main.run.xml
+*.run.xml
 *.mid
 midiOutput

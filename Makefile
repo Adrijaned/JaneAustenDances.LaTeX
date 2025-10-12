@@ -12,4 +12,4 @@ midis:
 	python3 midify.py content
 
 clean:
-	rm -rf main.pdf main.aux main.toc missfont.log musixtex.log *.idx *.ilg *.ind main.out *.bbl *.bcf *.blg main.run.xml midiOutput
+	rm -rf main.pdf main.aux singleDev.pdf singleDev.aux main.toc missfont.log musixtex.log *.idx *.ilg *.ind main.out singleDev.out *.bbl *.bcf *.blg main.run.xml singleDev.run.xml midiOutput
