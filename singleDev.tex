@@ -1,0 +1,34 @@
+% Document class and layout settings
+\documentclass[10pt,openany]{book}    % Standard book class with 12pt font and chapters starting on any page
+
+% Golden ratio constant for layout calculations
+\newcommand{\goldenratio}{1.618}
+
+% --- Book metadata definitions ---
+\newcommand{\authorname}{JaneAusten.cz}          % Primary author
+\newcommand{\booktitle}{Tance JaneAusten.cz}     % Main title
+\newcommand{\subtitle}{Primárně anglické kontratance období empíru}   % Subtitle (optional)
+\newcommand{\publisher}{JaneAusten.cz}                 % Publisher name
+\newcommand{\editionyear}{2025}                  % Edition year for print run
+
+
+% Additional package imports (layout, styling, utilities)
+\usepackage{misc/options}  % Custom configuration package (margins, headers)
+
+\input{frontmatter/indices}
+
+\begin{document}
+
+% ===== Front Matter =====
+\frontmatter                      % Roman numerals for front matter
+
+% ===== Main Content =====
+\mainmatter                       % Switch to Arabic numbering
+\pagestyle{fancy}                 % Fancy headers and footers for chapters
+
+\inputdance{content/the_frisky.tex}
+
+% ===== Back Matter =====
+\backmatter                       % Unnumbered appendices and bibliography
+
+\end{document}

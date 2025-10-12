@@ -32,16 +32,19 @@
 
 \def\includeincomplete{1}
 \def\workinprogress{0}
-\ifthenelse{\workinprogress=1}{\inputdance{content/the_dove_house}}{
+\ifthenelse{\workinprogress=1}{\inputdance{content/the_frisky.tex}}{
 % Chapter inputs
 \inputdance{content/playford1651explanation}
 \inputdance{content/all_in_a_garden_green}
 \inputdance{content/blew_cap}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/bromley_bells}}{} %chybí české instrukce
+\ifthenelse{\includeincomplete=1}{\inputdance{content/cranford_lodge}}{} %chybí české instrukce
 \inputdance{content/the_dove_house}
 \inputdance{content/emmas_waltz}
 \inputdance{content/the_fandango}
 \inputdance{content/the_fandango_set3}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_french_assembly}}{} %chybí české instrukce
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_frisky}}{} %chybí české instrukce
 \inputdance{content/hole_in_the_wall}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/indian_queen}}{} %chybí české instrukce
 \inputdance{content/jamaica}

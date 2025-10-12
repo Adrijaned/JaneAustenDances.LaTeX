@@ -33,11 +33,6 @@
 
 \def\nnotes{\vnotes1.6\elemskip}
 \def\nnnotes{\vnotes1.28\elemskip}
-%\newcommand{\HRule}{\par
-%  \vspace*{\dimexpr-\parskip-\baselineskip+0pt}
-%  \noindent\rule{\linewidth}{0.5mm}\par
-%  \vspace*{\dimexpr-\parskip-.5\baselineskip+0pt}}
-%\newcommand{\HRule}{\par\noindent\rule{\textwidth}{1pt}}
 \newcommand{\HRule}{\vspace*{1pt}\hrule\vspace*{1pt}}
 
 \usepackage{lettrine}   % Enables dropped capital letters at the beginning of chapters
@@ -57,6 +52,7 @@
 
 \makeatletter
     \newcommand{\danceName}[1]{\chapter{#1}\def\DanceNameStr{#1}\@ifnextchar\bgroup{\danceNameInt}{}}
+    \newcommand{\danceNameS}[2]{\chapter{#1}\def\DanceNameStr{#2}\@ifnextchar\bgroup{\danceNameInt}{}}
     \newcommand{\danceNameInt}[1]{\index[#1]{\DanceNameStr}\@ifnextchar\bgroup{\danceNameInt}{}}
 \makeatother % variable argument command \danceName defining chapter name and also adding said chapter to any number of indexes as following parameters
 
@@ -79,6 +75,10 @@
 \newcommand\Thbab{\includegraphics[width=.8em]{misc/Thompson212}}
 \newcommand\Thbba{\includegraphics[width=.8em]{misc/Thompson221}}
 \newcommand\Thbbb{\includegraphics[width=.8em]{misc/Thompson222}} %thompson-style symbols for music repetition. First symbol amount of dots above, second amount of lines, third amount of dots below
+\newcommand\Thaac{\Thaba} %TODO these symbols below, appearing for instance in The Frisky (Thompson 1774)
+\newcommand\Thbac{\Thbba}
+\newcommand\Thaad{\Thabb}
+\newcommand\Thbad{\Thbbb}
 
 \renewcommand{\Tqbl}[3]{\Ibl0{#1}{#3}2\qb0{#1}\qb0{#2}\tbl0\qb0{#3}}
 \renewcommand{\Tqbu}[3]{\Ibu0{#1}{#3}2\qb0{#1}\qb0{#2}\tbu0\qb0{#3}}
