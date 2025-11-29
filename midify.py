@@ -2,7 +2,27 @@ import argparse
 import os.path
 from pathlib import Path
 import re
+from math import floor
+import random
 
+class BeamNote:
+    lastTicks: {int: int} = {0: 32}
+    nextTicks: {int: int} = {0: 32}
+
+    @classmethod
+    def beamTicks(cls, beam: int):
+        res = cls.lastTicks.get(beam)
+        cls.lastTicks[beam] = cls.nextTicks.get(beam)
+        return res
+
+    @classmethod
+    def ticksImmediate(cls, beam: int, ticks: int):
+        cls.nextTicks[beam] = ticks
+        cls.lastTicks[beam] = ticks
+
+    @classmethod
+    def ticksNext(cls, beam: int, ticks: int):
+        cls.nextTicks[beam] = ticks
 
 class Pitch:
     def __init__(self, value: str):
@@ -21,6 +41,9 @@ class Pitch:
     def fromLetter(letter: str) -> 'Pitch':
         return Pitch(letter)
 
+    def __eq__(self, __value):
+        return self.value == __value.value
+
 
 class Accidentals:
     def __init__(self, sharps: list[Pitch], flats: list[Pitch], explicitNaturals: list[Pitch] = []):
@@ -28,6 +51,7 @@ class Accidentals:
         self.flats = flats
         self.explicitNaturals = explicitNaturals
 
+    @staticmethod
     def fromGlobalAndLocal(globalAccidentals: 'Accidentals', localAccidentals: 'Accidentals') -> 'Accidentals':
         return Accidentals(sharps=globalAccidentals.sharps + localAccidentals.sharps,
                            flats=globalAccidentals.flats + localAccidentals.flats,
@@ -35,11 +59,12 @@ class Accidentals:
 
 
 class Note:
-    def __init__(self, pitch: Pitch, start: int, duration: int, accidentals: Accidentals):
+    def __init__(self, pitch: Pitch, start: int, duration: int, accidentals: Accidentals, dynamics: int = 64):
         self.pitch = pitch
         self.start = start
         self.duration = duration
         self.accidentals = accidentals
+        self.dynamics = max(0, min(127, dynamics))
 
     def __repr__(self):
         return f"N({self.toMidiPitch()}@{self.start}+{self.duration})"
@@ -89,9 +114,9 @@ class Note:
     def toMidiBytes(self, prevNote: 'Note' = None) -> bytes:
         pitch = self.toMidiPitch()
         return (self.startMidiBytes(prevNote=prevNote) + 0x90.to_bytes(1, 'big') +
-                pitch.to_bytes(1, 'big') + (64).to_bytes(1, 'big') +
+                pitch.to_bytes(1, 'big') + (self.dynamics).to_bytes(1, 'big') +
                 self.endMidiBytes() + 0x80.to_bytes(1, 'big') +
-                pitch.to_bytes(1, 'big') + (64).to_bytes(1, 'big'))
+                pitch.to_bytes(1, 'big') + (self.dynamics).to_bytes(1, 'big'))
 
 
 def load_files(path: Path) -> dict[str, str]:
@@ -146,6 +171,16 @@ def auto_pitch(s: str) -> Pitch:
         return Pitch.fromLetter(s)
 
 
+def velocity_step(velocity: int) -> int:
+    velocity = floor(velocity / 1.3)
+    step = (random.random() - 0.5) / 2
+    if (step > 0):
+        velocity = floor(velocity + (step * (127 - velocity)))
+    else:
+        velocity = floor(velocity - (step * (velocity)))
+    return velocity
+
+
 SHARPS = [Pitch.fromNum(x) for x in [8, 5, 9, 6, 3, 7, 4]]
 FLATS = [Pitch.fromNum(x) for x in [4, 7, 3, 6, 2, 5, 1]]
 
@@ -153,7 +188,7 @@ FLATS = [Pitch.fromNum(x) for x in [4, 7, 3, 6, 2, 5, 1]]
 def main():
     parser = argparse.ArgumentParser(description='Jindrův absolutně příšerný kód pro parsování MusixTex do MIDI. '
                                                  'Pokud ho nakrmíte daty v trochu jiném formátu než očekává, pravděpodobně se rozbije. '
-                                                 'Use on your own danger.',
+                                                 'Use on your own risk.',
                                      usage="Zavolejte s povinným pozičním argumentem - cestou k souboru nebo adresáři s .tex soubory.")
     parser.add_argument('path', help='Path to file or directory')
     args = parser.parse_args()
@@ -162,10 +197,13 @@ def main():
     print(f"Loaded {len(file_map)} files:")
 
     for filename, content in file_map.items():
-        print(f"- {filename}: {len(content)} characters")
+        random.seed(filename)
+        print(f"- {filename}: {len(content)} characters", end='')
         if not "\\midifyable" in content:
-            print("  Not midifyable, skipping.")
+            print(":  Not midifyable, skipping.")
             continue
+        else:
+            print("")
         content = re.sub("(%.*)?\n *", "", content)
         content = content[content.find("\\begin{music}") + len("\\begin{music}"):]
         content = content[:content.find("\\endpiece")]
@@ -190,40 +228,51 @@ def main():
         deltatime = 0
         notes: list[Note] = []
         localAccidentals = Accidentals(sharps=[], flats=[], explicitNaturals=[])
-        explicitBeamNoteTicks = 0
+        velocity = 64
         for element in content:
-            if element.lower() in ['', "notes", "notesp", 'nnotes', 'nnnotes', 'en', 'xbar', 'alaligne']:
+            if element.lower() in ['', "notes", "notesp", 'nnotes', 'nnnotes']:
+                localAccidentals = Accidentals(sharps=[], flats=[], explicitNaturals=[])
+                velocity = floor(velocity + 0.8*(127 - velocity))
+                continue
+            if element.lower() in ['en', 'xbar', 'alaligne']:
                 localAccidentals = Accidentals(sharps=[], flats=[], explicitNaturals=[])
                 continue
             commandName = re.search(r"([a-zA-Z]+)", element).group(1)
             argsPart = parseArgs(element[len(commandName):])
             if commandName in ['cl', 'cu', 'ca']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 32
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['clp', 'cup', 'cap']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 48, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 48, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 48
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['ql', 'qu', 'qa']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 64, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 64, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 64
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['qlp', 'qup', 'qap']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 96, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 96, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 96
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['hl', 'hu', 'ha']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 128, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 128, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 128
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['hlp', 'hup', 'hap']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 192, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 192, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 192
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['wh']:
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 256, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime, 256, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 256
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName == 'sh':
                 localAccidentals.sharps.append(auto_pitch(argsPart[0]))
@@ -237,25 +286,30 @@ def main():
             elif commandName in ['Dqbl', 'Dqbu']:
                 if len(argsPart) == 1:
                     argsPart = parseArgs(argsPart[0])
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
+                velocity = floor(velocity / 1.3)
+                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += 2 * 32
+                velocity = floor(velocity / 1.3)
                 continue
             elif commandName in ['Tqbl', 'Tqbu']:
                 if len(argsPart) == 1:
                     argsPart = parseArgs(argsPart[0])
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[2]), deltatime + 2 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
+                velocity = floor(velocity / 1.3)
+                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
+                velocity = floor(velocity / 1.3)
+                notes.append(Note(auto_pitch(argsPart[2]), deltatime + 2 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
+                velocity = floor(velocity / 1.3)
                 deltatime += 3 * 32
                 continue
             elif commandName in ['Qqbl', 'Qqbu']:
                 if len(argsPart) == 1:
                     argsPart = parseArgs(argsPart[0])
-                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[2]), deltatime + 2 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
-                notes.append(Note(auto_pitch(argsPart[3]), deltatime + 3 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                notes.append(Note(auto_pitch(argsPart[0]), deltatime + 0 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), 127))
+                notes.append(Note(auto_pitch(argsPart[1]), deltatime + 1 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), 96))
+                notes.append(Note(auto_pitch(argsPart[2]), deltatime + 2 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), 76))
+                notes.append(Note(auto_pitch(argsPart[3]), deltatime + 3 * 32, 32, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), 64))
                 deltatime += 4 * 32
                 continue
             elif commandName in ['Dqbbl', 'Dqbbu']:
@@ -282,18 +336,27 @@ def main():
                 notes.append(Note(auto_pitch(argsPart[3]), deltatime + 3 * 16, 16, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
                 deltatime += 4 * 16
                 continue
-            elif commandName in ['ibu', 'ibl', "Ibu", 'Ibl', 'tbu', 'tbl']:
-                explicitBeamNoteTicks = 32
-            elif commandName in ['ibbu', 'ibbl', "Ibbu", 'Ibbl', 'nbbu', 'nbbl', 'tbbu', 'tbbl']:
-                explicitBeamNoteTicks = 16
+            elif commandName in ['ibu', 'ibl', "Ibu", 'Ibl']:
+                BeamNote.ticksImmediate(int(argsPart[0]), 32)
+            elif commandName in ['tbu', 'tbl']:
+                BeamNote.ticksNext(int(argsPart[0]), 32)
+            elif commandName in ['ibbu', 'ibbl', "Ibbu", 'Ibbl', 'nbbu', 'nbbl']:
+                BeamNote.ticksImmediate(int(argsPart[0]), 16)
+                velocity = floor(velocity + 0.8*(127 - velocity))
+            elif commandName in ['tbbu', 'tbbl']:
+                BeamNote.ticksNext(int(argsPart[0]), 16)
             elif commandName in ['qb']:
-                notes.append(Note(auto_pitch(argsPart[1]), deltatime, explicitBeamNoteTicks, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                explicitBeamNoteTicks = BeamNote.beamTicks(int(argsPart[0]))
+                notes.append(Note(auto_pitch(argsPart[1]), deltatime, explicitBeamNoteTicks, Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += explicitBeamNoteTicks
+                velocity = velocity_step(velocity)
             elif commandName in ['qbp']:
-                notes.append(Note(auto_pitch(argsPart[1]), deltatime, explicitBeamNoteTicks + (explicitBeamNoteTicks//2), Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals)))
+                explicitBeamNoteTicks = BeamNote.beamTicks(int(argsPart[0]))
+                notes.append(Note(auto_pitch(argsPart[1]), deltatime, explicitBeamNoteTicks + (explicitBeamNoteTicks//2), Accidentals.fromGlobalAndLocal(globalAccidentals, localAccidentals), velocity))
                 deltatime += explicitBeamNoteTicks + (explicitBeamNoteTicks//2)
+                velocity = velocity_step(velocity)
             elif "repeat" in commandName:
-                deltatime += 1024
+                deltatime += 1024 if deltatime > 0 else 0
                 continue
             elif commandName in ['slur', 'tslur', 'isluru', 'islurd']:
                 continue #TODO something?
@@ -317,6 +380,7 @@ def main():
             f.write(b'MThd\x00\x00\x00\x06\x00\x01\x00\x01\x00\x40MTrk' + (len(bodyBytes)).to_bytes(4, 'big'))
             f.write(bodyBytes)
         print("".join(str(n) for n in notes))
+        print("  DONE")
 
 
 if __name__ == '__main__':

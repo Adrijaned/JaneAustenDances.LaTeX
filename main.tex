@@ -31,8 +31,6 @@
 \pagestyle{fancy}                 % Fancy headers and footers for chapters
 
 \def\includeincomplete{1}
-\def\workinprogress{0}
-\ifthenelse{\workinprogress=1}{\inputdance{content/the_frisky.tex}}{
 % Chapter inputs
 \inputdance{content/playford1651explanation}
 \inputdance{content/all_in_a_garden_green}
@@ -40,6 +38,7 @@
 \ifthenelse{\includeincomplete=1}{\inputdance{content/bromley_bells}}{} %chybí české instrukce
 \ifthenelse{\includeincomplete=1}{\inputdance{content/cranford_lodge}}{} %chybí české instrukce
 \inputdance{content/the_dove_house}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/the_dressd_ship}}{} %chybí české instrukce
 \inputdance{content/emmas_waltz}
 \inputdance{content/the_fandango}
 \inputdance{content/the_fandango_set3}
@@ -50,6 +49,7 @@
 \inputdance{content/jamaica}
 \inputdance{content/miss_hamiltons_reel}
 \inputdance{content/my_lord_byrons_maggot}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/la_nouvelle_hambourgh}}{} %chybí české instrukce
 \ifthenelse{\includeincomplete=1}{\inputdance{content/once_a_night}}{} %chybí české instrukce
 \inputdance{content/pauls_alley}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/the_rainbow}}{} %chybí české instrukce
