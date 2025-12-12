@@ -32,10 +32,11 @@
 
 \def\includeincomplete{1}
 % Chapter inputs
-\inputdance{content/to_the_ingenious_reader}
-\inputdance{content/playford1651explanation}
+\inputdance{content/playford1651/to_the_ingenious_reader}
+\inputdance{content/playford1651/playford1651explanation}
 \inputdance{content/all_in_a_garden_green}
-\inputdance{content/blew_cap}
+\inputdance{content/playford1651/blew_cap}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/playford1651/boate_man}}{} %chybí české instrukce, hudba
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/the_boot}}{} %chybí české instrukce
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/bromley_bells}}{} %chybí české instrukce
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/cranford_lodge}}{} %chybí české instrukce
@@ -57,6 +58,7 @@
 \inputdance{content/thompson1774/miss_hamiltons_reel}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/miss_mollys_wigg}}{} %chybí české instrukce
 \inputdance{content/my_lord_byrons_maggot}
+\ifthenelse{\includeincomplete=1}{\inputdance{content/playford1651/the_night_peece.tex}}{} %chybí české instrukce, hudba
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/la_nouvelle_hambourgh}}{} %chybí české instrukce
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/once_a_night}}{} %chybí české instrukce
 \inputdance{content/pauls_alley}
@@ -69,7 +71,7 @@
 \inputdance{content/row_well_ye_mariners}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/the_royal_salute}}{} %chybí české instrukce
 \inputdance{content/swedish_country_dance}
-\inputdance{content/upon_a_summers_day}
+\inputdance{content/playford1651/upon_a_summers_day}
 \ifthenelse{\includeincomplete=1}{\inputdance{content/thompson1774/the_wedding_ring}}{} %chybí české instrukce
 }
 
