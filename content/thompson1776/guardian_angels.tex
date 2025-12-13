@@ -3,7 +3,6 @@
 
 {\large Longways triple minor; $AABB$ adlib\hfill \Source{Thompson1776}}  % E.g. {\large Longway for six; 3x AABB\hfill Playford, 1651}
 
-\begin{templateNotes}
 \begin{music}
     \smallmusicsize%
     \parindent0mm%
@@ -13,76 +12,34 @@
     \nobarnumbers%
     \generalmeter{\allabreve}%
     \generalsignature{3}%
-    \startpiece% From here on now actual notes start. NO UNNECESSARY WHITESPACES, end every line with %comment%
-% https://icking-music-archive.org/software/musixtex/musixdoc.pdf
-% every bar of music starts with either of nnnotes, nnotes, notes, notesp, Notes, Notesp, NOtes, NOTes, NOTEs or NOTES.
-% it determines relative spacing within that bar between individual notes, in increasing steps in order above.
-% every note is two letters - length and stem direction, both in small letters, here for clarity in capitals
-% \wh (whole note, exception from naming format as it has no stem)
-% stems may be Up, Low, or Auto (\Xu, \Xl, \Xa). explicit is preferable but auto usually works
-% note lengths are Half, Quarter, eight( C ), 16th, 32nd, 64th and 128th are CC, CCC, CCCC, CCCCC respectively
-% (\hX, \qX, \cX, \ccX, \cccX, \ccccX, \cccccX)
-% Immediately after follows the position of note - either numerical (0 is the lowest line, 1 is space above,
-% two is second lowest line...) or a letter position (has to be written with space inbetween it and the note,
-% letters are a-z and A-Z starting from _somewhere_)
-% Every bar of music ends with \en\xbar% (or \en\alaligne% if you want the next bar to start on next line)
-%
-% Sharps act like a note on their own and are written \shX (X again position as number or letter), similarly
-% flats \flX. Appending p to any note name (e.g. \qup) makes that note with a dot after (prolonged).
-%
-% Beams may be coded using \IXYABCD, where X is cardinality of beam (b for single beam, bb for double, up to
-% bbbb for quadruple), Y is direction (u or l), A is reference number (can be usually always 0), B is pitch of
-% starting note (number or letter), C pitch of ending note, D amount of notes on the beam -1. E.g. \Ibbu0132
-% for a double upper beam extending over 3 notes, where the first note is 1 and the last note is 3. Notes are
-% then added to the beam using \qbXY, where X is the beam reference number (A in beam definition) and Y is note
-% pitch as normal. Before last note of beam, \tbuX / \tblX is used to correctly terminate the beam, X again
-% reference number
-% For beams with only two notes, \DqbuXY, \DqblXY, \DqbbuXY, \DqbblXY may be used instead, XY being the pitches
-% of the two notes, nothing further is required then.
-%
-% Pauses/rests are coded (whole-half-quarter-...) \pause-\hp-\qp-\ds-\qs-\hs-\qqs, dotting is possible as usual
-%
-% Slurs may be coded using \slurXYAB, where X is start note pitch, Y is end note pitch, A is direction (u or d) and B
-% is amount of notes in slur - 1. E.g. \slur13u2 is a three-note upper slur from note 1 to note 3
-%
-% \en\zzleftrightrepeat may be used instead of other methods of ending bar to set a right repeat, new line, and set e
-% left repeat, \en\zzrightrepeat without inserting the left repeat on following line, \en\zleftrightrepeat without
-% newline. \zleftrepeat before start of bar inserts left repeat there, \en\setrightrepeat inserts right repeat without
-% forcing line break
-% \sk for horizontal space of 1 noteskip, \hsk half-noteskip
+    \startpiece%
 %%%%%%%% PART A %%%%%%%%
     \notes\qu3\Dqbl57\Dqbl64\Dqbu20\en\xbar%
     \notes\Qqbu3543\Dqbu21\qu0\en\xbar%
     \notes\Qqbu3035\Dqbu40\Dqbl46\en\xbar%
-    \NOTesp\Dqbl67\Dqbbu89\Dqbbl{10}{11}\en\zzleftrightrepeat%
+    \Notes\slur57u2\Ibl0572\qbp05\nbbbl0\qb06\tbl0\qb07\Dqbl65\slur54u1\ql5\ql4\en\alaligne%
+    %
+    \notes\qu3\Dqbl57\Dqbl64\Dqbu20\en\xbar%
+    \Notes\slur35d2\Ibu0352\qbp03\nbbbu0\qb04\tbu0\qb05\Dqbu43\Dqbu21\qu0\en\xbar%
+    \Notes\qu3\Dqbl45\qu1\slur68u2\Ibl0682\qbp06\nbbbl0\qb07\tbl0\qb08\en\xbar%
+    \notes\Qqbl7564\qu3\qu{a}\en\leftrightrepeat\alaligne%
 %%%%%%%% PART B %%%%%%%%
-    \nnotes\slur03u3\qa0\qa1\qa2\qa3\en\xbar%
-    \notes\slur46d2\qa4\qa5\qa6\qa7\en\xbar%
-    \Notes\Ibu08{11}3\qb08\qb09\qb0{10}\tbu0\qb0{11}\en\xbar%
-    \Notesp\Ibbbl033{15}%
-    \qb03\qb04\qb05\qb06\qb03\qb04\qb05\qb06\qb03\qb04\qb05\qb06\qb03\qb04\qb05\tbl0\qb06\en\alaligne%
-%
-    \NOtes\wh1\en\xbar%
-    \NOtesp\ha2\ha3\en\xbar%
-    \NOTes\hap4\qa5\en\xbar%
-    \NOTesp\Dqbl67\Dqbbu89\Dqbbl{10}{11}\en\setrightrepeat%
+    \notes\ql7\Ibl0{10}81\qbp0{10}\tbbl0\tbl0\qb08\qlp7\cl7\en\xbar%
+    \notes\Qqbl7665\ql5\ql4\en\xbar%
+    \notes\Qqbl7575\Qqbl6464\en\xbar%
+    \notes\Qqbl75{10}5\ql5\ql4\en\alaligne%
+    %
+    \notes\qu3\Dqbl75\Qqbl{10}753\en\xbar%
+    \notes\qu0\Dqbl46\Qqbu530c\en\xbar%
+    \Notes\qu1\Ibu0231\qbp02\tbbu0\tbu0\qb03\Dqbu03\Dqbl68\en\xbar%
+    \notes\Dqbl75\Qqbbl7654\qu3\qu{a}\en\leftrightrepeat%
     \endpiece%
-    \todo{Music}
 \end{music}
-\end{templateNotes}
 
-\begin{multicols}{2}
-    This is a template original dance description. It cu{\s}tomary u{\s}e{\s} long S whereever it appears in original text, and \Pfa, resp \Pfb to mark the repetition symbols from original texts
-    \columnbreak
-
-    Formating of original text is maintained as closely as possible where it makes sense
-\end{multicols}
-
-\HRule
-
-Most dances have descriptions written just as a nonformatted text, in that case, no multicolumn environment is needed.
-The original description is then ended by a double \verb!\Hrule!
-\todo{Dance description}
+Ca{\s}t off 2 Cu. \& up again \Thaaa
+cro{\s}s over 2 Cu. lead up to the top \& ca{\s}t off \Thbaa
+hands acro{\s}s with the 3.$^d$ Cu. and back again \Thaab
+hands 4 at top right \& left \Thbab
 \HRule
 \HRule
 \vspace{1em}
