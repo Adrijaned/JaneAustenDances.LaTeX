@@ -12,4 +12,5 @@
 *.blg
 *.run.xml
 *.mid
+*.cut
 midiOutput
